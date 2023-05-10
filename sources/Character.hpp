@@ -10,7 +10,7 @@ using namespace std;
 class Character
 {
 
-private:
+protected:
     string name;
     int health;
     Point location;
@@ -23,7 +23,7 @@ public:
     string getName();
     Point getLocation();
     int getHealth();
-    virtual string print();
+    virtual string print() = 0;
     
 
 

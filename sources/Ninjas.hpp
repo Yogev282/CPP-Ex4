@@ -8,7 +8,7 @@ using namespace std;
 
 class Ninja : public Character
 {
-    private:
+    protected:
         int agility;
         string performance;
 

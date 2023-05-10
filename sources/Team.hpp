@@ -13,7 +13,7 @@ namespace ariel
 {
     class Team
     {
-    private:
+    protected:
         Character *(*members);
         Character *leader;
         int currSize;
@@ -27,6 +27,18 @@ namespace ariel
         int stillAlive();
         Character* getLeader();
         void print();
+    };
+
+
+    class Team2 : public Team
+    {
+        void add(Character *member);
+    };
+
+
+    class SmartTeam : public Team
+    {
+        void add(Character *member);
     };
 
 }

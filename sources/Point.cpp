@@ -1,24 +1,67 @@
 #include "Point.hpp"
+#include <math.h>
+#include <iostream>
+#include <limits>
 
 
+using namespace std;
 
-Point::Point(double x, double y)
+int Point::count = 0;
+Point* Point::points[std::numeric_limits<int>::max()];
+
+Point::Point(double x, double y) : _x(x), _y(y)
 {
-    
+   points[count++] = this;
 }
 
 double Point::distance(Point p)
 {
-    return 0;
+    return sqrt(pow(_x - p._x, 2) + pow(_y - p._y, 2));
 }
 
 void Point::print()
 {
-    
+    cout << "(" << _x << "," << _y << ")";
 }
 
-void moveTowards(Point &p1, Point &p2, double distance)
+Point moveTowards(Point &p1, Point &p2, double distance)
 {
+    // array of points
+    Point* tmp[Point::count];
     
+    for (int i = 0; i < Point::count; i++)
+    {
+        tmp[i] = Point::points[i];
+    }
+    // sort array by distance from p2 by bubble sort
+    for (int i = 0; i < Point::count; i++)
+    {
+        for (int j = i + 1; j < Point::count; j++)
+        {
+            if (p2.distance(*tmp[i]) > p2.distance(*tmp[j]))
+            {
+                Point* temp = tmp[i];
+                tmp[i] = tmp[j];
+                tmp[j] = temp;
+            }
+        }
+    }
+
+    // find the closest point to p2 that p.distance(p1) < distance
+    for (int i = 0; i < Point::count; i++)
+    {
+        if (p1.distance(*tmp[i]) < distance)
+        {
+            if(tmp[i] == &p1 || tmp[i] == &p2)
+            {
+                continue;
+            }
+           
+            return *tmp[i];
+
+        }
+    }
+    // if there is no point that p.distance(p1) < distance return p1
+    return p1;
 }
 
