@@ -15,7 +15,7 @@ class Cowboy : public Character
     public:
         Cowboy(string name, Point location);
         void shoot(Character *other);
-        bool hasboolets();
+        bool hasbullets();
         void reload();
         string print();
 };

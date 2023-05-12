@@ -1,5 +1,6 @@
 #include "Point.hpp"
 #include <math.h>
+#include <string>
 #include <iostream>
 #include <limits>
 
@@ -22,6 +23,11 @@ double Point::distance(Point p)
 void Point::print()
 {
     cout << "(" << _x << "," << _y << ")";
+}
+
+string Point::toString()
+{
+    return "(" + to_string(_x) + "," + to_string(_y) + ")";
 }
 
 Point moveTowards(Point &p1, Point &p2, double distance)

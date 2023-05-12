@@ -13,10 +13,10 @@ class Ninja : public Character
         string performance;
 
     public:
-        Ninja(string name, Point location);
+        Ninja(string name, Point location) : Character(name, location){};
         void move(Character *other);
         void slash(Character *other);
-        int getAgility();
+        int getAgility(){return agility;}
         string print();
 };
 

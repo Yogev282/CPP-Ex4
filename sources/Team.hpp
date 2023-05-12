@@ -25,7 +25,7 @@ namespace ariel
         virtual void add(Character *member);
         void attack(Team *other);
         int stillAlive();
-        Character* getLeader();
+        Character* getLeader(){return leader;}
         void print();
     };
 

@@ -10,23 +10,22 @@ using namespace std;
 class Character
 {
 
-protected:
-    string name;
-    int health;
-    Point location;
+    protected:
+        string name;
+        int health;
+        Point location;
 
-public:
-    Character(string name, Point location);
-    bool isAlive();
-    double distance(Character *other);
-    void hit(int damage);
-    string getName();
-    Point getLocation();
-    int getHealth();
-    virtual string print() = 0;
-    
-
-
+    public:
+        Character(string name, Point location) : name(name), location(location){};
+        bool isAlive();
+        double distance(Character *other);
+        void hit(int damage);
+        string getName(){return name;}
+        Point getLocation(){return location;}
+        void setLocation(Point location){this->location = location;}
+        int getHealth(){return health;}
+        virtual string print() = 0;
+        
 };
 
 #endif

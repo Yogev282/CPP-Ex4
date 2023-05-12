@@ -24,11 +24,6 @@ int Team::stillAlive()
     return 0;
 }
 
-Character* Team::getLeader()
-{
-    return nullptr;
-}
-
 void Team::print()
 {
 }
