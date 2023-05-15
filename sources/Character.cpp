@@ -16,6 +16,10 @@ double Character::distance(Character *other)
 void Character::hit(int damage)
 {
     this->health -= damage;
+    if(this->health < 0)
+    {
+        this->health = 0;
+    }
 }
 
 

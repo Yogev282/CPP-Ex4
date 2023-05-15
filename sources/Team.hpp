@@ -14,32 +14,43 @@ namespace ariel
     class Team
     {
     protected:
-        Character *(*members);
+        Ninja *(*ninjas);
+        Cowboy *(*cowboys);
         Character *leader;
-        int currSize;
         int capacity = 10;
+        int currSizeN;
+        int currSizeC;
+
 
     public:
         Team(Character *leader);
         ~Team();
-        virtual void add(Character *member);
+        void add(Ninja *member);
+        void add(Cowboy *member);
         void attack(Team *other);
+        Character* findEnemy(Team *other);
         int stillAlive();
         Character* getLeader(){return leader;}
         void print();
+        
     };
 
 
-    class Team2 : public Team
-    {
-        void add(Character *member);
-    };
+    // class Team2 : public Team
+    // {
+    //     public:
+    //         Team2(Character *leader);
+    //         void add(Character *member);
+       
+    // };
 
 
-    class SmartTeam : public Team
-    {
-        void add(Character *member);
-    };
+    // class SmartTeam : public Team
+    // {
+    //     public:
+    //         SmartTeam(Character *leader);
+    //         void add(Character *member);
+    // };
 
 }
 

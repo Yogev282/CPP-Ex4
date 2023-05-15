@@ -13,6 +13,7 @@ class Cowboy : public Character
         int ammo;
 
     public:
+        string role = "Cowboy";
         Cowboy(string name, Point location);
         void shoot(Character *other);
         bool hasbullets();

@@ -26,7 +26,14 @@ void Ninja::slash(Character *other)
 {
     if(this->isAlive() && this->distance(other) <= 1)
     {
-        other->hit(30);
+        other->hit(40);
+    }
+    else if (this->isAlive() && this->distance(other) > 1)
+    {
+        this->move(other);
+    }
+    else{
+        throw "Character is dead";
     }
 }
 
@@ -56,7 +63,7 @@ TrainedNinja::TrainedNinja(string name, Point location) : Ninja(name, location)
     this->health = 120;
 }
 
-YountNinja::YountNinja(string name, Point location) : Ninja(name, location)
+YoungNinja::YoungNinja(string name, Point location) : Ninja(name, location)
 {
     this->agility = 14;
     this->health = 100;

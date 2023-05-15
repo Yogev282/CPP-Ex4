@@ -16,6 +16,8 @@ class Character
         Point location;
 
     public:
+        string role;
+        bool inTeam = false;
         Character(string name, Point location) : name(name), location(location){};
         bool isAlive();
         double distance(Character *other);

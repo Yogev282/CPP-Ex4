@@ -10,9 +10,9 @@ class Ninja : public Character
 {
     protected:
         int agility;
-        string performance;
 
     public:
+        string role = "Ninja";
         Ninja(string name, Point location) : Character(name, location){};
         void move(Character *other);
         void slash(Character *other);
@@ -38,10 +38,10 @@ class TrainedNinja : public Ninja
 
 
 
-class YountNinja : public Ninja
+class YoungNinja : public Ninja
 {
     public:
-        YountNinja(string name, Point location);
+        YoungNinja(string name, Point location);
 };
 
 

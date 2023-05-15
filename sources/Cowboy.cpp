@@ -12,10 +12,18 @@ Cowboy::Cowboy(string name, Point location) : Character(name, location)
 
 void Cowboy::shoot(Character *other)
 {
-    if (this->ammo > 0 && this->isAlive())
+    if ( this->isAlive() && this->ammo > 0 )
     {
         this->ammo--;
         other->hit(10);
+    }
+    else if( this->isAlive() && this->ammo == 0 )
+    {
+        this->reload();
+    }
+    else
+    {
+        throw "Character is dead";
     }
 }
 

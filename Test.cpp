@@ -24,7 +24,7 @@ TEST_CASE("Distance between points") {
 TEST_CASE("Character") {
     Point a(0, 0), b(1, 1), c(2, 2), d(3, 3);
 
-    YountNinja *yNinja = new YountNinja("young", a);
+    YoungNinja *yNinja = new YoungNinja("young", a);
     TrainedNinja *tNinja = new TrainedNinja("trained", b);
     OldNinja *oNinja = new OldNinja("old", c);
     Cowboy *cowboy = new Cowboy("cowboy", d);
@@ -40,7 +40,7 @@ TEST_CASE("Character") {
     CHECK(yNinja->getHealth() < tNinja->getHealth());
     CHECK(yNinja->getHealth() < oNinja->getHealth());
     CHECK(tNinja->getHealth() < oNinja->getHealth());
-    CHECK(cowboy->getHealth() < yNinja->getHealth());
+    CHECK(cowboy->getHealth() > yNinja->getHealth());
 
     CHECK(yNinja->distance(tNinja) == tNinja->distance(yNinja));
     CHECK(yNinja->distance(oNinja) == oNinja->distance(yNinja));
@@ -51,7 +51,7 @@ TEST_CASE("Character") {
     CHECK(yNinja->distance(tNinja) == oNinja->distance(cowboy));
 
     Point e(0, 0), f(1, 0);
-    YountNinja *young = new YountNinja("young", e);
+    YoungNinja *young = new YoungNinja("young", e);
     Cowboy *cboy = new Cowboy("cowboy", f);
 
     CHECK(cboy->isAlive());
@@ -60,18 +60,22 @@ TEST_CASE("Character") {
     cboy->shoot(young);
     CHECK(young->getHealth() == health - 10);
     young->slash(cboy);
+    CHECK(cboy->getHealth() == 70);
+    young->slash(cboy);
+    CHECK(cboy->getHealth() == 30);
+    young->slash(cboy);
     CHECK(cboy->getHealth() == 0);
     CHECK(!cboy->isAlive());
 }   
 
 
 TEST_CASE("Teams"){
-    Point a(0, 0), b(1, 1), c(2, 2), d(3, 3);
+    Point a(0, 0), b(1, 1), c(3, 2), d(3, 3);
 
-    YountNinja *yNinja = new YountNinja("young", d);
+    YoungNinja *yNinja = new YoungNinja("young", d);
     TrainedNinja *tNinja = new TrainedNinja("trained", b);
-    OldNinja *oNinja = new OldNinja("old", c);
-    Cowboy *cowboy = new Cowboy("cowboy", a);
+    OldNinja *oNinja = new OldNinja("old", a);
+    Cowboy *cowboy = new Cowboy("cowboy", c);
 
     Team teamA(yNinja);
     Team teamB(cowboy);
@@ -81,7 +85,11 @@ TEST_CASE("Teams"){
     CHECK_THROWS(teamA.add(yNinja));
     CHECK_THROWS(teamB.add(yNinja));
 
-    teamA.attack(&teamB);
+    printf(" %d\n", cowboy->getHealth());
+    for(int i = 0; i < 5; i++){
+        teamA.attack(&teamB);
+    }
+    printf(" %d\n", cowboy->getHealth());
     CHECK(!cowboy->isAlive());
     CHECK(teamB.stillAlive() == 2);
     CHECK(teamA.stillAlive() == 1);
