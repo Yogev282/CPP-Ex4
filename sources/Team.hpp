@@ -7,31 +7,39 @@
 #include "Cowboy.hpp"
 #include <string>
 
+const int TEAM_CAPACITY = 10;
+
 using namespace std;
 
 namespace ariel
 {
     class Team
     {
-    protected:
+    public:
         Ninja *(*ninjas);
         Cowboy *(*cowboys);
         Character *leader;
-        int capacity = 10;
+        int capacity = TEAM_CAPACITY;
         int currSizeN;
         int currSizeC;
 
 
-    public:
+    // public:
         Team(Character *leader);
-        ~Team();
+        virtual ~Team();
         void add(Ninja *member);
         void add(Cowboy *member);
         void attack(Team *other);
         Character* findEnemy(Team *other);
         int stillAlive();
-        Character* getLeader(){return leader;}
+        Character* getLeader() const {return leader;}
         void print();
+
+        
+        Team(const Team&) = default;  // Copy constructor
+        Team& operator=(const Team&) = default;  // Copy assignment operator
+        Team(Team&&) = default;  // Move constructor
+        Team& operator=(Team&&) = default;  // Move assignment operator
         
     };
 

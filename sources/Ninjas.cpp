@@ -57,14 +57,29 @@ OldNinja::OldNinja(string name, Point location) : Ninja(name, location)
     this->health = 150;
 }
 
+OldNinja::~OldNinja()
+{
+    // cout << "OldNinja destructor" << endl;
+}
+
 TrainedNinja::TrainedNinja(string name, Point location) : Ninja(name, location)
 {
     this->agility = 12;
     this->health = 120;
 }
 
+TrainedNinja::~TrainedNinja()
+{
+    // cout << "TrainedNinja destructor" << endl;
+}
+
 YoungNinja::YoungNinja(string name, Point location) : Ninja(name, location)
 {
     this->agility = 14;
     this->health = 100;
+}
+
+YoungNinja::~YoungNinja()
+{
+    // cout << "YoungNinja destructor" << endl;
 }

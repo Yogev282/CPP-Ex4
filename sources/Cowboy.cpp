@@ -10,6 +10,11 @@ Cowboy::Cowboy(string name, Point location) : Character(name, location)
     this -> health = 110;
 }
 
+Cowboy::~Cowboy()
+{
+    // cout << "Cowboy destructor" << endl;
+}
+
 void Cowboy::shoot(Character *other)
 {
     if ( this->isAlive() && this->ammo > 0 )
