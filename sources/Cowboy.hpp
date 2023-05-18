@@ -7,24 +7,29 @@
 
 using namespace std;
 
-class Cowboy : public Character
-{
-    private:
-        int ammo;
-        string role = "Cowboy";
+namespace ariel{
 
-    public:
-        Cowboy(string name, Point location);
-        ~Cowboy() override;
-        void shoot(Character *other);
-        bool hasbullets();
-        void reload();
-        string print() override;
+    class Cowboy : public Character
+    {
+        private:
+            int ammo;
 
-        Cowboy(const Cowboy&) = default;  // Copy constructor
-        Cowboy& operator=(const Cowboy&) = default;  // Copy assignment operator
-        Cowboy(Cowboy&&) = default;  // Move constructor
-        Cowboy& operator=(Cowboy&&) = default;  // Move assignment operator
-};
+        public:
+            Cowboy(string name, Point location);
+            ~Cowboy() override;
+            void attack(Character *other) override {shoot(other);}
+            void shoot(Character *other);
+            bool hasboolets();
+            void reload();
+            string getRole() override {return "Cowboy";}
+            string print() override;
+
+            Cowboy(const Cowboy&) = default;  // Copy constructor
+            Cowboy& operator=(const Cowboy&) = default;  // Copy assignment operator
+            Cowboy(Cowboy&&) = default;  // Move constructor
+            Cowboy& operator=(Cowboy&&) = default;  // Move assignment operator
+    };
+
+}
 
 #endif

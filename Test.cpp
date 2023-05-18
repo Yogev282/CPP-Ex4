@@ -4,7 +4,7 @@
 #include "sources/Character.hpp"
 #include "sources/Team.hpp"
 #include "sources/Cowboy.hpp"
-#include "sources/Ninjas.hpp"
+#include "sources/Ninja.hpp"
 #include <math.h>
 
 using namespace std;
@@ -84,6 +84,7 @@ TEST_CASE("Teams"){
     teamB.add(oNinja);
     CHECK_THROWS(teamA.add(yNinja));
     CHECK_THROWS(teamB.add(yNinja));
+
 
     printf(" %d\n", cowboy->getHealth());
     for(int i = 0; i < 5; i++){

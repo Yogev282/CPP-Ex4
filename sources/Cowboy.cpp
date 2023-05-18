@@ -3,55 +3,75 @@
 
 using namespace std;
 
+namespace ariel{
 
-Cowboy::Cowboy(string name, Point location) : Character(name, location)
-{
-    this -> ammo = 6;
-    this -> health = 110;
-}
-
-Cowboy::~Cowboy()
-{
-    // cout << "Cowboy destructor" << endl;
-}
-
-void Cowboy::shoot(Character *other)
-{
-    if ( this->isAlive() && this->ammo > 0 )
+    Cowboy::Cowboy(string name, Point location) : Character(name, location)
     {
-        this->ammo--;
-        other->hit(10);
+        this -> ammo = 6;
+        this -> health = 110;
     }
-    else if( this->isAlive() && this->ammo == 0 )
-    {
-        this->reload();
-    }
-    else
-    {
-        throw "Character is dead";
-    }
-}
 
-bool Cowboy::hasbullets()
-{
-    return this->ammo > 0;
-}
-
-void Cowboy::reload()
-{
-    this->ammo = 6;
-}
-
-string Cowboy::print()
-{
-    string printer = "";
-    if (this->isAlive())
+    Cowboy::~Cowboy()
     {
-        printer = "C - " + this->name + ", " + to_string(this->health) + " HP, at " + this->location.toString();
+        // cout << "Cowboy destructor" << endl;
     }
-    else
+
+    void Cowboy::shoot(Character *other)
     {
-        printer = "C - (" + this->name + "), DEAD";
+        if(!other->isAlive())
+        {
+            throw runtime_error("Character is dead");
+        }
+        if(other == nullptr)
+        {
+            throw invalid_argument("nullptr");
+        }
+        if(other == this)
+        {
+            throw runtime_error("Character cannot attack itself");
+        }
+
+        if ( this->isAlive() && this->ammo > 0 )
+        {
+            this->ammo--;
+            other->hit(10);
+        }
+        else if( this->isAlive() && this->ammo == 0 )
+        {
+            this->reload();
+        }
+        else
+        {
+            throw runtime_error("Character is dead");
+        }
     }
-    return printer;
+
+    bool Cowboy::hasboolets()
+    {
+        return this->ammo > 0;
+    }
+
+    void Cowboy::reload()
+    {
+        if(!this->isAlive())
+        {
+            throw runtime_error("Character is dead");
+        }
+        this->ammo = 6;
+    }
+
+    string Cowboy::print()
+    {
+        string printer = "";
+        if (this->isAlive())
+        {
+            printer = "C - " + this->name + ", " + to_string(this->health) + " HP, at " + this->location.toString();
+        }
+        else
+        {
+            printer = "C - (" + this->name + "), DEAD";
+        }
+        return printer;
+    }
+
 }

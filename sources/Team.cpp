@@ -2,229 +2,170 @@
 #include <limits>
 
 using namespace std;
-using namespace ariel;
 
-Team::Team(Character *leader)
-{
-    this->leader = leader;
-    this->ninjas = new Ninja *[10];
-    this->cowboys = new Cowboy *[10];
-    leader->inTeam = true;
-    if(leader->role == "Ninja")
-    {
-        this->ninjas[0] = (Ninja *)leader;
-        this->currSizeN = 1;
-        this->currSizeC = 0;
-    }
-    else
-    {
-        this->cowboys[0] = (Cowboy *)leader;
-        this->currSizeC = 1;
-        this->currSizeN = 0;
-    }
-}
+namespace ariel{
 
-Team::~Team()
-{
-    for (int i = 0; i < this->currSizeN; i++)
+    Team::Team(Character *leader)
     {
-        delete this->ninjas[i];
-    }
-    delete[] this->ninjas;
+        if(leader->inTeam)
+        {
 
-    for (int i = 0; i < this->currSizeC; i++)
-    {
-        delete this->cowboys[i];
+            throw runtime_error("Character is already in a team");
+        }
+        this->leader = leader;
+        this->members = new Character*[TEAM_CAPACITY];
+        this->capacity = TEAM_CAPACITY;
+        this->currSize = 1;
+        this->members[0] = &(*leader);
+        leader->inTeam = true;
     }
-    delete[] this->cowboys;
-}
-
-void Team::add(Ninja *member)
-{
-    if(stillAlive() == this->capacity)
+  
+    
+    Team::~Team()
     {
-        throw "Team is full";
-    }
-    if(member->inTeam)
-    {
-        throw "Character is already in a team";
+        for(int i = 0; i < this->currSize; i++)
+        {
+            delete this->members[i];
+        }
+        delete[] this->members;  
     }
 
-    this->ninjas[this->currSizeN] = member;
-    this->currSizeN++;
-    member->inTeam = true;
-}
-
-void Team::add(Cowboy *member)
-{
-    if(stillAlive() == this->capacity)
+    void Team::add(Character *member)
     {
-        throw "Team is full";
+        if(this->currSize == this->capacity)
+        {
+            throw runtime_error("Team is full");
+        }
+        if(member->inTeam)
+        {
+            throw runtime_error("Character is already in a team");
+        }
+        if(!member->isAlive())
+        {
+            throw runtime_error("Character is dead");
+        }
+        this->members[this->currSize++] = member;
+        member->inTeam = true;
+        this->sort();
     }
-    if(member->inTeam)
+
+    void Team::attack(Team *other)
     {
-        throw "Character is already in a team";
+        if(this->stillAlive() == 0)
+        {
+            throw runtime_error("Team is dead");
+        }
+        if(!this->leader->isAlive())
+        {
+            int min = std::numeric_limits<int>::max();
+            Character *newLeader;
+            // find new leader
+            for(int i = 0; i < this->currSize; i++)
+            {
+                if(this->members[i]->isAlive())
+                {
+                    if(this->members[i]->distance(this->leader) < min)
+                    {
+                        min = this->members[i]->distance(this->leader);
+                        newLeader = this->members[i];
+                    }
+                }
+            }
+            this->leader = newLeader;
+        }
+
+        if(other == nullptr)
+        {
+            throw invalid_argument("nullptr");
+        }
+        
+
+        // find closest enemy to the leader
+        if(other->stillAlive() == 0)
+        {
+            throw runtime_error("Enemy team are all dead");
+        }
+        Character *closestEnemy = this->findEnemy(other);
+
+        // attack
+        if(this->currSize > 0){
+            for(int i = 0; i < this->currSize; i++)
+            {
+                if(this->members[i]->isAlive())
+                {
+                    if(!closestEnemy->isAlive()){
+                        if(other->stillAlive() == 0)
+                        {
+                            throw runtime_error("Enemy team are all dead");
+                        }
+                        else
+                        {
+                            closestEnemy = this->findEnemy(other);
+                        }
+                    }
+                    this->members[i]->attack(closestEnemy);
+                }
+            }
+        }
     }
 
-    this->cowboys[this->currSizeC] = member;
-    this->currSizeC++;
-    member->inTeam = true;
-}
-
-
-void Team::attack(Team *other)
-{
-    if(!this->leader->isAlive())
+    Character* Team::findEnemy(Team *other)
     {
         int min = std::numeric_limits<int>::max();
-        Character *newLeader;
-        // find new leader
-        for(int i = 0; i < this->currSizeN; i++)
+        Character *closestEnemy;
+        
+        for(int i = 0; i < other->currSize; i++)
         {
-            if(this->ninjas[i]->isAlive())
+            if(other->members[i]->isAlive())
             {
-                if(this->ninjas[i]->distance(this->leader) < min)
+                if(other->members[i]->distance(this->leader) < min)
                 {
-                    min = this->ninjas[i]->distance(this->leader);
-                    newLeader = this->ninjas[i];
+                    min = other->members[i]->distance(this->leader);
+                    closestEnemy = other->members[i];
                 }
             }
         }
-        for(int i = 0; i < this->currSizeC; i++)
-        {
-            if(this->cowboys[i]->isAlive())
-            {
-                if(this->cowboys[i]->distance(this->leader) < min)
-                {
-                    min = this->cowboys[i]->distance(this->leader);
-                    newLeader = this->cowboys[i];
-                }
-            }
-        }
+        
+        return closestEnemy;
     }
-    
 
-    // find closest enemy to the leader
-    if(other->stillAlive() == 0)
+    int Team::stillAlive()
     {
-        return ;
-    }
-    Character *closestEnemy = findEnemy(other);
-
-    // attack
-    if(this->currSizeN > 0){
-        for(int i = 0; i < this->currSizeN; i++)
-        {
-            if(this->ninjas[i]->isAlive())
+        int counter = 0;
+        if(this->currSize > 0){
+            for(int i = 0; i < this->currSize; i++)
             {
-                if(!closestEnemy->isAlive()){
-                    if(other->stillAlive() == 0)
-                    {
-                        throw "Enemy team are all dead";
-                    }
-                    else
-                    {
-                        closestEnemy = findEnemy(other);
-                    }
-                }
-                this->ninjas[i]->slash(closestEnemy);
-            }
-        }
-    }
-    if(this->currSizeC > 0){
-        for(int i = 0; i < this->currSizeC; i++)
-        {
-            if(this->cowboys[i]->isAlive())
-            {
-                if(!closestEnemy->isAlive()){
-                    if(other->stillAlive() == 0)
-                    {
-                        throw "Enemy team are all dead";
-                    }
-                    else
-                    {
-                        closestEnemy = findEnemy(other);
-                    }
-                }
-                this->cowboys[i]->shoot(closestEnemy);
-            }
-        }
-    }
-}
-
-Character* Team::findEnemy(Team *other)
-{
-    int min = std::numeric_limits<int>::max();
-    Character *closestEnemy;
-    if(this -> currSizeN > 0){
-        for(int i = 0; i < other->currSizeN; i++)
-        {
-            if(other->ninjas[i]->isAlive())
-            {
-                if(other->ninjas[i]->distance(other->leader) < min)
+                if(this->members[i]->isAlive())
                 {
-                    min = other->ninjas[i]->distance(other->leader);
-                    closestEnemy = other->ninjas[i];
+                    counter++;
+                }
+            }
+        }
+        return counter;
+    }
+
+    void Team::print()
+    {   
+        string printer = "";
+        if(this->currSize > 0){
+            for(int i = 0; i < this->currSize; i++)
+            {
+                printer += this->members[i]->print() +  " *** ";
+            }
+        }
+        printf("%s\n", printer.c_str());
+    }
+
+
+    void Team::sort(){
+        for(int i = 0; i < this->currSize ; i++ ){
+            for(int j = i + 1; j < this->currSize ; j++ ){
+                if(this->members[i]->compare(this->members[j]) == 1){
+                    Character *temp = this->members[i];
+                    this->members[i] = this->members[j];
+                    this->members[j] = temp;
                 }
             }
         }
     }
-    if(this -> currSizeC > 0){
-        for(int i = 0; i < other->currSizeC; i++)
-        {
-            if(other->cowboys[i]->isAlive())
-            {
-                if(other->cowboys[i]->distance(other->leader) < min)
-                {
-                    min = other->cowboys[i]->distance(other->leader);
-                    closestEnemy = other->cowboys[i];
-                }
-            }
-        }
-    }
-
-    return closestEnemy;
-}
-
-int Team::stillAlive()
-{
-    int counter = 0;
-    if(this->currSizeN > 0){
-        for(int i = 0; i < this->currSizeN; i++)
-        {
-            if(this->ninjas[i]->isAlive())
-            {
-                counter++;
-            }
-        }
-    }
-    if(this->currSizeC > 0){
-        for(int i = 0; i < this->currSizeC; i++)
-        {
-            if(this->cowboys[i]->isAlive())
-            {
-                
-                counter++;
-            }
-        }
-    }
-    return counter;
-}
-
-void Team::print()
-{   
-    string printer = "";
-    if(this->currSizeC > 0){
-        for(int i = 0; i < this->currSizeN; i++)
-        {
-            printer += this->cowboys[i]->print() +  " *** ";
-        }
-    }
-    if(this->currSizeN > 0){
-        for(int i = 0; i < this->currSizeN; i++)
-        {
-            printer += this->ninjas[i]->print() +  " *** ";
-        }
-    }
-    printf("%s\n", printer.c_str());
 }
