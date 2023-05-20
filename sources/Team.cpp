@@ -96,14 +96,22 @@ namespace ariel{
                     if(!closestEnemy->isAlive()){
                         if(other->stillAlive() == 0)
                         {
-                            throw runtime_error("Enemy team are all dead");
+                            return;
                         }
                         else
                         {
                             closestEnemy = this->findEnemy(other);
                         }
                     }
-                    this->members[i]->attack(closestEnemy);
+                    // ********************
+                    if(this->members[i]->getRole() == "Ninja" && this->members[i]->distance(closestEnemy) > 1)
+                    {
+                        ((Ninja*)this->members[i])->move(closestEnemy);
+                    }
+                    else
+                    {
+                        this->members[i]->attack(closestEnemy);
+                    }
                 }
             }
         }
@@ -150,7 +158,7 @@ namespace ariel{
         if(this->currSize > 0){
             for(int i = 0; i < this->currSize; i++)
             {
-                printer += this->members[i]->print() +  " *** ";
+                printer += this->members[i]->print() +  "\n";
             }
         }
         printf("%s\n", printer.c_str());

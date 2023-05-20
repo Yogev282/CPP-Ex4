@@ -33,11 +33,11 @@ namespace ariel{
     {
         if(this-> getRole() == "Cowboy" && other->getRole() == "Ninja")
         {
-            return 1;
+            return -1;
         }
         else if(this-> getRole() == "Ninja" && other->getRole() == "Cowboy")
         {
-            return -1;
+            return 1;
         }
         else
         {

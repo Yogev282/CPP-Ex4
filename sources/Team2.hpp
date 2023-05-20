@@ -9,13 +9,9 @@ namespace ariel{
    
     class Team2 : public Team
     {
-        private:
-            Character *leader;
-            Character *member;
-            
         public:
             Team2(Character *leader) : Team(leader) {};
-            void add(Character *member) override 
+            void add(Character *member) override
             {
                 if(currSize < capacity)
                 {

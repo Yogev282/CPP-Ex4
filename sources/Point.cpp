@@ -30,6 +30,10 @@ namespace ariel{
         {
             throw invalid_argument("Distance cannot be negative");
         }
+        else if(distance > pnt1.distance(pnt2))
+        {
+            return Point(pnt2.getX(), pnt2.getY());
+        }
 
         double x1 = pnt1.getX();
         double y1 = pnt1.getY();

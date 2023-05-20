@@ -30,8 +30,8 @@ namespace ariel
             Team(Character *leader);
             virtual ~Team();
             virtual void add(Character *member);
-            void attack(Team *other);
-            Character* findEnemy(Team *other);
+            virtual void attack(Team *other);
+            virtual Character* findEnemy(Team *other);
             int stillAlive();
             Character* getLeader() const {return leader;}
             void sort();

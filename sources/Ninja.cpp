@@ -40,7 +40,7 @@ namespace ariel{
         }
         else if (this->isAlive() && this->distance(other) > 1)
         {
-            this->move(other);
+            return;
         }
         else{
             throw runtime_error("Character is dead");
