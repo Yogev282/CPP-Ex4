@@ -10,6 +10,7 @@ namespace ariel{
         return this->health > 0;
     }
 
+    // uses the distance function from Point
     double Character::distance(Character *other)
     {
         return this->location.distance(other->location);
@@ -17,18 +18,21 @@ namespace ariel{
 
     void Character::hit(int damage)
     {
+        // damage must be 10 by shooting or 40 by slashing
         if(damage != 10 && damage != 40)
         {
             throw invalid_argument("damage must be an integer");
         }
         
         this->health -= damage;
+        // health can't be negative
         if(this->health < 0)
         {
             this->health = 0;
         }
     }
 
+    // compare characters by their roles, uses to sort the members in the team
     int Character::compare(Character *other)
     {
         if(this-> getRole() == "Cowboy" && other->getRole() == "Ninja")

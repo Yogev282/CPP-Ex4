@@ -12,13 +12,13 @@ namespace ariel{
     {
         public:
             TrainedNinja(string name, Point location);
-            ~TrainedNinja() override;
+            // ~TrainedNinja() override;
 
         
-        TrainedNinja(const TrainedNinja&) = default;  // Copy constructor
-        TrainedNinja& operator=(const TrainedNinja&) = default;  // Copy assignment operator
-        TrainedNinja(TrainedNinja&&) = default;  // Move constructor
-        TrainedNinja& operator=(TrainedNinja&&) = default;  // Move assignment operator
+        // TrainedNinja(const TrainedNinja&) = default;  // Copy constructor
+        // TrainedNinja& operator=(const TrainedNinja&) = default;  // Copy assignment operator
+        // TrainedNinja(TrainedNinja&&) = default;  // Move constructor
+        // TrainedNinja& operator=(TrainedNinja&&) = default;  // Move assignment operator
     };
 
 }

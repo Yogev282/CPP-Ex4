@@ -12,13 +12,13 @@ namespace ariel{
     {
         public:
             YoungNinja(string name, Point location);
-            ~YoungNinja() override;
+            // ~YoungNinja() override;
 
         
-        YoungNinja(const YoungNinja&) = default;  // Copy constructor
-        YoungNinja& operator=(const YoungNinja&) = default;  // Copy assignment operator
-        YoungNinja(YoungNinja&&) = default;  // Move constructor
-        YoungNinja& operator=(YoungNinja&&) = default;  // Move assignment operator
+            // YoungNinja(const YoungNinja&) = default;  // Copy constructor
+            // YoungNinja& operator=(const YoungNinja&) = default;  // Copy assignment operator
+            // YoungNinja(YoungNinja&&) = default;  // Move constructor
+            // YoungNinja& operator=(YoungNinja&&) = default;  // Move assignment operator
     };
 
 }

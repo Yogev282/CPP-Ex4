@@ -11,11 +11,6 @@ namespace ariel{
         this -> health = 110;
     }
 
-    Cowboy::~Cowboy()
-    {
-        // cout << "Cowboy destructor" << endl;
-    }
-
     void Cowboy::shoot(Character *other)
     {
         if(!other->isAlive())
@@ -36,12 +31,13 @@ namespace ariel{
             this->ammo--;
             other->hit(10);
         }
+        // if no ammo, reload
         else if( this->isAlive() && this->ammo == 0 )
         {
             this->reload();
         }
         else
-        {
+        { // this->isAlive() == false
             throw runtime_error("Character is dead");
         }
     }

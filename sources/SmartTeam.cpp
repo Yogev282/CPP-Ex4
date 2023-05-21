@@ -8,7 +8,7 @@ using namespace std;
 
 namespace ariel
 {
-
+    // attacking by the user's choice
     void SmartTeam::attack(Team *other)
     {
         cout << "Team positions are: " << endl;
@@ -25,8 +25,10 @@ namespace ariel
         }
     }
 
+    // get an character from enemy team to attack by a name from the user
     Character* SmartTeam::findEnemy(Team *other)
     {
+    
         string name;
         cin >> name;
 

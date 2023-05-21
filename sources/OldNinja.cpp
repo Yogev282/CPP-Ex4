@@ -10,9 +10,9 @@ namespace ariel{
         this->health = 150;
     }
 
-    OldNinja::~OldNinja()
-    {
-        // cout << "OldNinja destructor" << endl;
-    }
+    // OldNinja::~OldNinja()
+    // {
+    //     // cout << "OldNinja destructor" << endl;
+    // }
     
 }

@@ -10,9 +10,9 @@ namespace ariel{
         this->health = 100;
     }
 
-    YoungNinja::~YoungNinja()
-    {
-        // cout << "YoungNinja destructor" << endl;
-    }
+    // YoungNinja::~YoungNinja()
+    // {
+    //     // cout << "YoungNinja destructor" << endl;
+    // }
 
 }

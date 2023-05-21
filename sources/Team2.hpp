@@ -14,19 +14,19 @@ namespace ariel{
             void add(Character *member) override
             {
                 if(currSize < capacity)
-                {
-                    if(member->inTeam)
+                {   
+                    if(member->inTeam) // check if member is already in a team
                     {
                         throw runtime_error("Character is already in a team");
                     }
-                    if(!member->isAlive())
+                    if(!member->isAlive()) // check if member is alive
                     {
                         throw runtime_error("Character is dead");
                     }
                     members[currSize] = member;
                     currSize++;
                 }
-                else
+                else // team is full
                 {
                     throw runtime_error("Team is full");
                 }

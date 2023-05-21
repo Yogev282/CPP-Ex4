@@ -13,10 +13,11 @@ namespace ariel{
             throw runtime_error("Character is already in a team");
         }
         this->leader = leader;
-        this->members = new Character*[TEAM_CAPACITY];
+        this->members = new Character*[TEAM_CAPACITY]; 
         this->capacity = TEAM_CAPACITY;
         this->currSize = 1;
-        this->members[0] = &(*leader);
+        this->members[0] = leader;
+        // mark leader as in team
         leader->inTeam = true;
     }
   
@@ -25,36 +26,43 @@ namespace ariel{
     {
         for(int i = 0; i < this->currSize; i++)
         {
+            // delete all members
             delete this->members[i];
         }
-        delete[] this->members;  
+        // delete the array
+        delete[] this->members; 
     }
 
     void Team::add(Character *member)
     {
+        // max size of team is 10
         if(this->currSize == this->capacity)
         {
             throw runtime_error("Team is full");
         }
+        // check if member is already in a team
         if(member->inTeam)
         {
             throw runtime_error("Character is already in a team");
         }
+        // check if member is alive
         if(!member->isAlive())
         {
             throw runtime_error("Character is dead");
         }
         this->members[this->currSize++] = member;
-        member->inTeam = true;
-        this->sort();
+        member->inTeam = true; // mark member as in team
+        this->sort(); // sort the members by their roles
     }
 
     void Team::attack(Team *other)
     {
+        // check if there are alive members in the team
         if(this->stillAlive() == 0)
         {
             throw runtime_error("Team is dead");
         }
+        // if leader is dead, find new leader by distance from the old leader
         if(!this->leader->isAlive())
         {
             int min = std::numeric_limits<int>::max();
@@ -88,33 +96,33 @@ namespace ariel{
         Character *closestEnemy = this->findEnemy(other);
 
         // attack
-        if(this->currSize > 0){
-            for(int i = 0; i < this->currSize; i++)
+        
+        for(int i = 0; i < this->currSize; i++)
+        {
+            if(this->members[i]->isAlive())
             {
-                if(this->members[i]->isAlive())
-                {
-                    if(!closestEnemy->isAlive()){
-                        if(other->stillAlive() == 0)
-                        {
-                            return;
-                        }
-                        else
-                        {
-                            closestEnemy = this->findEnemy(other);
-                        }
-                    }
-                    // ********************
-                    if(this->members[i]->getRole() == "Ninja" && this->members[i]->distance(closestEnemy) > 1)
+                if(!closestEnemy->isAlive()){
+                    if(other->stillAlive() == 0)
                     {
-                        ((Ninja*)this->members[i])->move(closestEnemy);
+                        return; // enemy team is dead
                     }
                     else
                     {
-                        this->members[i]->attack(closestEnemy);
+                        closestEnemy = this->findEnemy(other);
                     }
+                }
+                // if the member is a ninja and the enemy is far, move to the enemy
+                if(this->members[i]->getRole() == "Ninja" && this->members[i]->distance(closestEnemy) > 1)
+                {
+                    ((Ninja*)this->members[i])->move(closestEnemy);
+                }
+                else
+                {
+                    this->members[i]->attack(closestEnemy);
                 }
             }
         }
+    
     }
 
     Character* Team::findEnemy(Team *other)
@@ -140,13 +148,11 @@ namespace ariel{
     int Team::stillAlive()
     {
         int counter = 0;
-        if(this->currSize > 0){
-            for(int i = 0; i < this->currSize; i++)
+        for(int i = 0; i < this->currSize; i++)
+        {
+            if(this->members[i]->isAlive())
             {
-                if(this->members[i]->isAlive())
-                {
-                    counter++;
-                }
+                counter++;
             }
         }
         return counter;
@@ -164,7 +170,7 @@ namespace ariel{
         printf("%s\n", printer.c_str());
     }
 
-
+    // sort the members by their roles with bubble sort
     void Team::sort(){
         for(int i = 0; i < this->currSize ; i++ ){
             for(int j = i + 1; j < this->currSize ; j++ ){

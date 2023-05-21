@@ -22,7 +22,7 @@ namespace ariel{
             string getRole() override {return "Ninja";}
             string print() override;
 
-            ~Ninja() override = default;
+            ~Ninja() override = default; 
             Ninja(const Ninja&) = default;  // Copy constructor
             Ninja& operator=(const Ninja&) = default;  // Copy assignment operator
             Ninja(Ninja&&) = default;  // Move constructor

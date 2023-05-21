@@ -10,9 +10,9 @@ namespace ariel{
         this->health = 120;
     }
 
-    TrainedNinja::~TrainedNinja()
-    {
-        // cout << "TrainedNinja destructor" << endl;
-    }
+    // TrainedNinja::~TrainedNinja()
+    // {
+    //     // cout << "TrainedNinja destructor" << endl;
+    // }
 
 }

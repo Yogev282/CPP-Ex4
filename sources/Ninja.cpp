@@ -7,6 +7,7 @@ using namespace std;
 
 namespace ariel{
 
+    // moving the ninja by its agility towards the other character
     void Ninja::move(Character *other)
     {
         if(!this->isAlive())
@@ -33,16 +34,16 @@ namespace ariel{
         {
             throw runtime_error("Character cannot attack itself");
         }
-     
+
         if(this->isAlive() && this->distance(other) <= 1)
         {
             other->hit(40);
         }
         else if (this->isAlive() && this->distance(other) > 1)
         {
-            return;
+            return; // The ninja misses the attack
         }
-        else{
+        else{ // this->isAlive() == false
             throw runtime_error("Character is dead");
         }
     }
